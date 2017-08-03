@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.7.2.min.js"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0
+        }
+        ul li{
+            list-style:none;
+        }
+        ul li input{
+            width:30px;
+            text-align:center;
+            height:30px;
+            line-height:30px;
+            background-color:rgba(100,200,100,.4);
+        }
+        button{
+            width:20px;
+            height:20px;
+            border-radius:2px;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <h2>购物车</h2>
+    <br>
+    <hr>
+    <br>
+
+    <ul>
+        <li id="1">
+            <span>mi</span>
+            <button class="add">+</button>
+            <input type="text" value="0" class="number">
+            <button class="minus">-</button>
+        </li>
+        <li id="2">
+            <span>TX</span>
+            <button class="add">+</button>
+            <input type="text" value="0" class="number">
+            <button class="minus">-</button>
+        </li>
+        <li id="3">
+            <span>SD</span>
+            <button class="add">+</button>
+            <input type="text" value="0" class="number">
+            <button class="minus">-</button>
+        </li>
+        <li id="4">
+            <span>ZO</span>
+            <button class="add">+</button>
+            <input type="text" value="0" class="number">
+            <button class="minus">-</button>
+        </li>
+        <li id="5">
+            <span>TQ</span>
+            <button class="add">+</button>
+            <input type="text" value="0" class="number">
+            <button class="minus">-</button>
+        </li>
+    </ul>
+    <br>
+    <input type="button" id="buy" value="car">
+</center>
+</body>
+<script>
+
+    $(function(){
+//        遍历localStorage中的数据
+
+        for(var i in localStorage){
+            $("li[id=" +i+"]").find('.number').val(localStorage[i]);
+        }
+    })
+
+    $(function(){
+
+        $('.add').bind('click',function(){
+
+            //获取input对象
+            var num = $(this).closest('li').find('.number');
+
+            //获取不同商品id
+            var gid = $(this).closest('li').attr('id');
+
+            //用户点击操作增加商品数量
+            num.val(parseInt(num.val()) + 1);
+
+            //将数据存储到localStorage中
+            if(window.localStorage){
+
+                localStorage.setItem(gid,num.val());
+            }
+            else{
+                //使用其他
+            }
+        })
+    })
+
+    //使用添加购物车操作
+    $('#buy').on('click',function(){
+
+//        ajax
+        $.post('server.php',localStorage,function(data){
+
+            data == 1 ? alert('add true') : alert('失败');
+        })
+    })
+</script>
+</html>
